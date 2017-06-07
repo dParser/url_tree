@@ -1,7 +1,9 @@
 # encoding: utf-8
 class UrlTree
 
-	first_url_list = ""
+	def initialize(first_url_list = ["beeline.ru", "megafon.ru", "mts.ru"])
+		@first_url_list = first_url_list
+	end
 
   # Метод "Вывод на экран списка URL 1-ого уровня":
   def first_url_put
@@ -15,7 +17,7 @@ class UrlTree
 
   # Метод "Добавить элемент в список URL 1-ого уровня":
   def first_url_add
-    puts "Список URL 1-ого уровня: #first_url_list!"
+    puts "Список URL 1-ого уровня: #{@first_url_list}"
   end
 end
   
