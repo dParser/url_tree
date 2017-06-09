@@ -51,7 +51,20 @@ class FirstLevelUrls
     end
   end
 
+  def create  # Метод "Создание списка URL 1-ого уровня"
+    puts "\nКогда-нибудь вместо этого вывода мы создадим список URL 1-ого уровня!"
+  end
 
+  def add  # Метод "Добавить элемент в список URL 1-ого уровня"
+    puts "\nСписок URL 1-ого уровня:"
+    puts @first_url_list
+    puts "\nВведите доменное имя сайта нового оператора:"
+    input = gets
+    @first_url_list.push(input.chomp)
+    puts "\nОбновленный список URL 1-ого уровня:"
+    puts @first_url_list
+  end
+  
   def put  # Метод "Вывод на экран списка URL 1-ого уровня"
     puts "\nСписок URL 1-ого уровня:"
     for tmp_arr in @first_url_list
@@ -63,21 +76,6 @@ class FirstLevelUrls
     end
   end
 
-
-  def create  # Метод "Создание списка URL 1-ого уровня"
-    puts "\nКогда-нибудь вместо этого вывода мы создадим список URL 1-ого уровня!"
-  end
-
-  
-  def add  # Метод "Добавить элемент в список URL 1-ого уровня"
-    puts "\nСписок URL 1-ого уровня:"
-    puts @first_url_list
-    puts "\nВведите доменное имя сайта нового оператора:"
-    input = gets
-    @first_url_list.push(input.chomp)
-    puts "\nОбновленный список URL 1-ого уровня:"
-    puts @first_url_list
-  end
 end
 
 # Создание объекта:
