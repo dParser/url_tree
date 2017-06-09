@@ -1,13 +1,8 @@
 # encoding: utf-8
 
-$path = File.dirname(__FILE__)
-$db_path = $path + '\DB'
-$level1_file=$db_path + '\level-1.csv'
-
 class UrlTree
 
 # Метод "Инициализация":
-#  def initialize(first_url_list = ["beeline.ru", "megafon.ru", "mts.ru", "tele2.ru"])
   def initialize
     @first_url_list = Array.new
 
@@ -84,9 +79,12 @@ class UrlTree
   end
 end
 
+$path = File.dirname(__FILE__)
+$db_path = $path + '\DB'
+$level1_file=$db_path + '\level-1.csv'
+
 # Создание объекта:
 urls=UrlTree.new #["beeline.ru", "megafon.ru", "mts.ru", "tele2.ru"]
-
 
 # Меню выбора действий:
 puts "\nЧто вы хотите сделать?"
