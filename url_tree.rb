@@ -4,10 +4,9 @@ $path = File.dirname(__FILE__)
 $db_path = $path + '/DB'
 $level1_file=$db_path + '/level-1.csv'
 
-class UrlTree
+class FirstLevelUrls
 
-# Метод "Инициализация":
-  def initialize
+  def initialize  # Метод "Инициализация"
     @first_url_list = Array.new
 
     # Загрузка Хэша 1-ого уровня из файла level-1.csv:
@@ -50,12 +49,10 @@ class UrlTree
                         }
                        ]
     end
-#    # Список url 1-ого уровня
-#    @first_url_list = first_url_list
   end
 
-# Метод "Вывод на экран списка URL 1-ого уровня":
-  def first_url_put
+
+  def put  # Метод "Вывод на экран списка URL 1-ого уровня"
     puts "\nСписок URL 1-ого уровня:"
     for tmp_arr in @first_url_list
       puts "\n"
@@ -66,13 +63,13 @@ class UrlTree
     end
   end
 
-# Метод "Создание списка URL 1-ого уровня":
-  def first_url_create
+
+  def create  # Метод "Создание списка URL 1-ого уровня"
     puts "\nКогда-нибудь вместо этого вывода мы создадим список URL 1-ого уровня!"
   end
 
-# Метод "Добавить элемент в список URL 1-ого уровня":
-  def first_url_add
+  
+  def add  # Метод "Добавить элемент в список URL 1-ого уровня"
     puts "\nСписок URL 1-ого уровня:"
     puts @first_url_list
     puts "\nВведите доменное имя сайта нового оператора:"
@@ -84,8 +81,7 @@ class UrlTree
 end
 
 # Создание объекта:
-urls=UrlTree.new #["beeline.ru", "megafon.ru", "mts.ru", "tele2.ru"]
-
+first_urls=FirstLevelUrls.new
 
 # Меню выбора действий:
 puts "\nЧто вы хотите сделать?"
@@ -99,11 +95,11 @@ input = input.chomp
 # case-условие:
 case input.to_i
    when 1
-     urls.first_url_create
+     first_urls.create
    when 2
-     urls.first_url_add
+     first_urls.add
    when 3
-     urls.first_url_put  
+     first_urls.put
    else return
 end
 
