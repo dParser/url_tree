@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 $path = File.dirname(__FILE__)
-$db_path = $path + '\DB'
-$level1_file=$db_path + '\level-1.csv'
+$db_path = $path + '/DB'
+$level1_file=$db_path + '/level-1.csv'
 
 class UrlTree
 
