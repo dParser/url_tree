@@ -52,21 +52,25 @@ class FirstLevelUrls
   end
 
   def create  # Метод "Создание списка URL 1-ого уровня"
-    puts "\nКогда-нибудь вместо этого вывода мы создадим список URL 1-ого уровня!"
+    puts "\nКогда-нибудь вместо этого вывода мы создадим массив URL 1-ого уровня!"
   end
 
-  def add  # Метод "Добавить элемент в список URL 1-ого уровня"
-    puts "\nСписок URL 1-ого уровня:"
+  def add  # Метод "Добавить элемент в массив URL 1-ого уровня"
+    puts "\nмассив URL 1-ого уровня:"
     puts @first_url_list
     puts "\nВведите доменное имя сайта нового оператора:"
     input = gets
     @first_url_list.push(input.chomp)
-    puts "\nОбновленный список URL 1-ого уровня:"
+    puts "\nОбновленный массив URL 1-ого уровня:"
     puts @first_url_list
   end
-  
+ 
+  def get # Метод "Возвратить массив (хэшей?) URL 1-ого уровня"
+	@first_url_list
+  end
+ 
   def put  # Метод "Вывод на экран списка URL 1-ого уровня"
-    puts "\nСписок URL 1-ого уровня:"
+    puts "\nмассив URL 1-ого уровня:"
     for tmp_arr in @first_url_list
       puts "\n"
       puts tmp_arr[:oss]
@@ -76,6 +80,10 @@ class FirstLevelUrls
     end
   end
 
+  def create_next  # Создание списка URL's следующего уровня
+    
+  end
+  
 end
 
 # Создание объекта:
@@ -83,9 +91,10 @@ first_urls=FirstLevelUrls.new
 
 # Меню выбора действий:
 puts "\nЧто вы хотите сделать?"
-puts "Создать список URL 1-ого уровня - нажмите 1"
-puts "Добавить элемент в список URL 1-ого уровня - нажмите 2"
-puts "Вывести на экран списка URL 1-ого уровня - нажмите 3"
+puts "Создать массив URL 1-ого уровня - нажмите 1"
+puts "Добавить элемент в массив URL 1-ого уровня - нажмите 2"
+puts "Вывести на экран массив URL 1-ого уровня - нажмите 3"
+puts "Вывести на экран результат работы метода get - нажмите 4"
 puts "Выйти из программы - любую другую клавишу"
 input = gets
 input = input.chomp
@@ -98,6 +107,8 @@ case input.to_i
      first_urls.add
    when 3
      first_urls.put
+   when 4
+     puts first_urls.get
    else return
 end
 
