@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'net/http'
 
 # ОПИСАНИЕ
 # 1. В файле regions.csv хранится инф. по регионам в виде:
@@ -24,6 +25,8 @@ $db_path = $path + '/DB'
 $regions_file=$db_path + '/regions.csv'  # URL 1-ого уровня. Стартовые по кажд. ОСС
 $level1_file=$db_path + '/level-1.csv'  # URL 1-ого уровня. Стартовые по кажд. ОСС
 $level2_file=$db_path + '/level-2.csv'  # URL 2-ого уровня. По типу кл. и регионам
+$url_ok_file=$db_path + '/200-OK.csv'   # URL 2-ого ур. со статусом 200 OK
+$url_404_file=$db_path + '/404.csv'   #  URL 2-ого ур. сос статусом 404 и т.д.
 
 class FirstLevelUrls
 
@@ -103,7 +106,7 @@ class FirstLevelUrls
     }
   end
 
-  def create_next  # Создать список URL's следующего уровня
+  def create_next  # Создать список URL's 2-ого уровня
     if File.exists?($level2_file)  # Создать backup файла level-2.csv
       puts 'Улучшить операцию сохранения предыдущей версии файла. level-2.csv'
       File.rename($level2_file, "#{$level2_file}.bak")
@@ -114,8 +117,8 @@ class FirstLevelUrls
       file_obj_regions.rewind # установить указатель на начало файла
       file_obj_regions.each{|ll| # Создаем списки для каждой пары "Оператор-Тип клиента"
         arr = ll.chomp.split(";")  # Строку файла преобраз. в массив, элементы которого:
-                                 # [0] - OCC (лат.)
-                                 # [1] - Регион (лат.)
+                                   # [0] - OCC (лат.)
+                                   # [1] - Регион (лат.)
         if arr[0] == hh[:oss]
           tmp = hh[:starting_url].gsub("^", arr[1]) # в URL: "^" заменить на назв. региона
           file_obj_level2.puts("#{hh[:oss]};#{hh[:domen]};#{hh[:b2_x]};#{hh[:category]};#{tmp}")
@@ -123,6 +126,33 @@ class FirstLevelUrls
       }
     }
   end #def
+  
+  def check_url # Проверить URL на предмет "200 OK"
+    if File.exists?($url_ok_file)  # Создать backup файла 200-OK.csv
+      puts 'Улучшить операцию сохранения предыдущей версии файла. 200-OK.csv'
+      File.rename($url_ok_file, "#{$url_ok_file}.bak")
+    end
+    file_obj_url_ok = File.new($url_ok_file, "w+")
+
+    if File.exists?($url_404_file)  # Создать backup файла 404.csv
+      puts 'Улучшить операцию сохранения предыдущей версии файла. 404.csv'
+      File.rename($url_404_file, "#{$url_404_file}.bak")
+    end
+    file_obj_url_404 = File.new($url_404_file, "w+")
+
+    create_next # Создать список URL's 2-ого уровня
+    file_obj_level2 = File.open($level2_file)
+    file_obj_level2.each{|line|
+      arr = line.chomp.split(";")  # Строку файла преобраз. в массив:
+      uri = URI(arr[4])   # последний элем. массива содержит URL
+      res = Net::HTTP.get_response(uri)
+      if res.code == "200"
+        file_obj_url_ok.puts("#{arr[0]};#{arr[1]};#{arr[2]};#{arr[3]};#{arr[4]};#{res.code}")
+      else
+        file_obj_url_404.puts("#{arr[0]};#{arr[1]};#{arr[2]};#{arr[3]};#{arr[4]};#{res.code}")
+      end
+    }
+  end
   
 end
 
@@ -136,6 +166,7 @@ puts "Добавить элемент в массив URL 1-ого уровня 
 puts "Вывести на экран массив URL 1-ого уровня - нажмите 3"
 puts "Вывести на экран массив хэшей @first_url_hashs - нажмите 4"
 puts "Создать URL 2-ого уровня - нажмите 5"
+puts "Проверить <200-OK> у URL 2-ого уровня - нажмите 6"
 puts "Выйти из программы - любую другую клавишу"
 input = gets
 input = input.chomp
@@ -152,6 +183,8 @@ case input.to_i
      puts first_urls.get
    when 5
      first_urls.create_next
+   when 6
+     first_urls.check_url
    else return
 end
 
