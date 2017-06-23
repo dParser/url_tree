@@ -143,13 +143,15 @@ class FirstLevelUrls
     create_next # Создать список URL's 2-ого уровня
     file_obj_level2 = File.open($level2_file)
     file_obj_level2.each{|line|
-      arr = line.chomp.split(";")  # Строку файла преобраз. в массив:
-      uri = URI(arr[4])   # последний элем. массива содержит URL
-      res = Net::HTTP.get_response(uri)
+      arr = line.chomp.split(";")  # строку файла преобраз. в массив:
+      uri = URI(arr[4])            # последний элем. массива содержит URL
+      res = Net::HTTP.get_response(uri) # проверить код загрузки
       if res.code == "200"
         file_obj_url_ok.puts("#{arr[0]};#{arr[1]};#{arr[2]};#{arr[3]};#{arr[4]};#{res.code}")
+        puts res.code
       else
         file_obj_url_404.puts("#{arr[0]};#{arr[1]};#{arr[2]};#{arr[3]};#{arr[4]};#{res.code}")
+        puts("#{arr[4]};#{res.code}")
       end
     }
   end
@@ -161,29 +163,26 @@ first_urls=FirstLevelUrls.new
 
 # Меню выбора действий:
 puts "\nЧто вы хотите сделать?"
-#puts "Создать массив URL 1-ого уровня - нажмите 1"
-puts "Добавить элемент в массив URL 1-ого уровня - нажмите 2"
-puts "Вывести на экран массив URL 1-ого уровня - нажмите 3"
-puts "Вывести на экран массив хэшей @first_url_hashs - нажмите 4"
-puts "Создать URL 2-ого уровня - нажмите 5"
-puts "Проверить <200-OK> у URL 2-ого уровня - нажмите 6"
+puts "Добавить элемент в массив URL 1-ого уровня - нажмите 1"
+puts "Вывести на экран массив URL 1-ого уровня - нажмите 2"
+puts "Вывести на экран массив хэшей @first_url_hashs - нажмите 3"
+puts "Создать URL 2-ого уровня - нажмите 4"
+puts "Проверить <200-OK> у URL 2-ого уровня - нажмите 5"
 puts "Выйти из программы - любую другую клавишу"
 input = gets
 input = input.chomp
 
 # case-условие:
 case input.to_i
-#   when 1
-#     first_urls.create
-   when 2
+   when 1
      first_urls.add
-   when 3
+   when 2
      first_urls.put
-   when 4
+   when 3
      puts first_urls.get
-   when 5
+   when 4
      first_urls.create_next
-   when 6
+   when 5
      first_urls.check_url
    else return
 end
