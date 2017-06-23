@@ -91,7 +91,7 @@ class FirstLevelUrls
   end
  
   def get # Возвратить массив (хэшей?) URL 1-ого уровня
-	@first_url_hashs
+    @first_url_hashs
   end
  
   def put  # Вывести на экран список URL 1-ого уровня
