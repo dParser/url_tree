@@ -6,14 +6,14 @@ require 'net/http'
 #     Оператор связи(лат.);
 #     Регион(лат.)
 #
-# 2. В файле level-1.csv хранится инф. по стартовым URL в виде:
+# 2. В файле 1-level.csv хранится инф. по стартовым URL в виде:
 #     Оператор связи(лат.);
 #     Домен сайта;
 #     Тип клиента;
 #     Категория тарифного плана;    (для смартфона, планшета, роутера и т.д.)
 #     Cтартовое URL в виде шаблона
 #
-# 3. На основании файлов regions.csv и level-1.csv строится файл level-2.csv в виде:
+# 3. На основании файлов regions.csv и 1-level.csv строится файл 2-level.csv в виде:
 #     Оператор связи(лат.);
 #     Домен сайта;
 #     Тип клиента;
@@ -23,17 +23,17 @@ require 'net/http'
 $path = File.dirname(__FILE__)
 $db_path = $path + '/DB'
 $regions_file=$db_path + '/regions.csv'  # URL 1-ого уровня. Стартовые по кажд. ОСС
-$level1_file=$db_path + '/level-1.csv'  # URL 1-ого уровня. Стартовые по кажд. ОСС
-$level2_file=$db_path + '/level-2.csv'  # URL 2-ого уровня. По типу кл. и регионам
-$url_ok_file=$db_path + '/200-OK.csv'   # URL 2-ого ур. со статусом 200 OK
-$url_404_file=$db_path + '/404.csv'   #  URL 2-ого ур. сос статусом 404 и т.д.
+$level1_file=$db_path + '/1-level.csv'  # URL 1-ого уровня. Стартовые по кажд. ОСС
+$level2_file=$db_path + '/2-level.csv'  # URL 2-ого уровня. По типу кл. и регионам
+$url_ok_file=$db_path + '/2-200-OK.csv'   # URL 2-ого ур. со статусом 200 OK
+$url_404_file=$db_path + '/2-404.csv'   #  URL 2-ого ур. сос статусом 404 и т.д.
 
 class FirstLevelUrls
 
   def initialize
     @first_url_hashs = Array.new # массив хэшей
 
-    # Загрузка URL 1-ого уровня из файла level-1.csv в массив хэшей:
+    # Загрузка URL 1-ого уровня из файла 1-level.csv в массив хэшей:
     if File.exists?($level1_file)
       file_obj = File.open($level1_file)
       file_obj.each {|ll| arr = ll.split(";")  # Строку файла в массив
@@ -107,8 +107,8 @@ class FirstLevelUrls
   end
 
   def create_next  # Создать список URL's 2-ого уровня
-    if File.exists?($level2_file)  # Создать backup файла level-2.csv
-      puts 'Улучшить операцию сохранения предыдущей версии файла. level-2.csv'
+    if File.exists?($level2_file)  # Создать backup файла 2-level.csv
+      puts 'Улучшить операцию сохранения предыдущей версии файла. 2-level.csv'
       File.rename($level2_file, "#{$level2_file}.bak")
     end
     file_obj_level2 = File.new($level2_file, "w+")
@@ -128,14 +128,14 @@ class FirstLevelUrls
   end #def
   
   def check_url # Проверить URL на предмет "200 OK"
-    if File.exists?($url_ok_file)  # Создать backup файла 200-OK.csv
-      puts 'Улучшить операцию сохранения предыдущей версии файла. 200-OK.csv'
+    if File.exists?($url_ok_file)  # Создать backup файла 2-200-OK.csv
+      puts 'Улучшить операцию сохранения предыдущей версии файла. 2-200-OK.csv'
       File.rename($url_ok_file, "#{$url_ok_file}.bak")
     end
     file_obj_url_ok = File.new($url_ok_file, "w+")
 
-    if File.exists?($url_404_file)  # Создать backup файла 404.csv
-      puts 'Улучшить операцию сохранения предыдущей версии файла. 404.csv'
+    if File.exists?($url_404_file)  # Создать backup файла 2-404.csv
+      puts 'Улучшить операцию сохранения предыдущей версии файла. 2-404.csv'
       File.rename($url_404_file, "#{$url_404_file}.bak")
     end
     file_obj_url_404 = File.new($url_404_file, "w+")
