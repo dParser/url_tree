@@ -8,16 +8,16 @@ require 'net/http'
 #
 # 2. В файле 1-level.csv хранится инф. по стартовым URL в виде:
 #     Оператор связи(лат.);
-#     Домен сайта;
 #     Тип клиента;
 #     Категория тарифного плана;    (для смартфона, планшета, роутера и т.д.)
+#     Домен сайта;
 #     Cтартовое URL в виде шаблона
 #
 # 3. На основании файлов regions.csv и 1-level.csv строится файл 2-level.csv в виде:
 #     Оператор связи(лат.);
-#     Домен сайта;
 #     Тип клиента;
 #     Категория тарифного плана;    (для смартфона, планшета, роутера и т.д.)
+#     Домен сайта;
 #     URL региона
 
 $path = File.dirname(__FILE__)
@@ -38,9 +38,9 @@ class FirstLevelUrls
       file_obj = File.open($level1_file)
       file_obj.each {|ll| arr = ll.split(";")  # Строку файла в массив
         @first_url_hashs.push({:oss=>arr[0],   # Название ОСС (лат.)
-                               :domen=>arr[1], # Доменное имя сайта ОСС
-                               :b2_x=>arr[2],  # Тип клиена (корп., физ.)
-                               :category=>arr[3],  # Категория т.планов
+                               :b2_x=>arr[1],  # Тип клиена (корп., физ.)
+                               :category=>arr[2],  # Категория т.планов
+                               :domen=>arr[3], # Доменное имя сайта ОСС
                                :starting_url=>arr[4]  # Стартовое URL
                              })
       }
@@ -99,9 +99,9 @@ class FirstLevelUrls
     @first_url_hashs.each{|hh| 
       puts "\n"
       puts hh[:oss]
-      puts "\tДомен: #{hh[:domen]}"
       puts "\tТип клиена: #{hh[:b2_x]}"
       puts "\tКатегория тарифов: #{hh[:category]}"
+      puts "\tДомен: #{hh[:domen]}"
       puts "\tСтартовое URL: #{hh[:starting_url]}"
     }
   end
@@ -121,7 +121,7 @@ class FirstLevelUrls
                                    # [1] - Регион (лат.)
         if arr[0] == hh[:oss]
           tmp = hh[:starting_url].gsub("^", arr[1]) # в URL: "^" заменить на назв. региона
-          file_obj_level2.puts("#{hh[:oss]};#{hh[:domen]};#{hh[:b2_x]};#{hh[:category]};#{tmp}")
+          file_obj_level2.puts("#{hh[:oss]};#{hh[:b2_x]};#{hh[:category]};#{hh[:domen]};#{tmp}")
         end
       }
     }
