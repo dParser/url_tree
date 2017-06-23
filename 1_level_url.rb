@@ -1,4 +1,4 @@
-# encoding: utf-8
+#encoding: utf-8
 require 'net/http'
 
 # ОПИСАНИЕ
@@ -157,35 +157,3 @@ class FirstLevelUrls
   end
   
 end
-
-# Создание объекта:
-first_urls=FirstLevelUrls.new
-
-# Меню выбора действий:
-puts "\nЧто вы хотите сделать?"
-puts "Добавить элемент в массив URL 1-ого уровня - нажмите 1"
-puts "Вывести на экран массив URL 1-ого уровня - нажмите 2"
-puts "Вывести на экран массив хэшей @first_url_hashs - нажмите 3"
-puts "Создать URL 2-ого уровня - нажмите 4"
-puts "Проверить <200-OK> у URL 2-ого уровня - нажмите 5"
-puts "Выйти из программы - любую другую клавишу"
-input = gets
-input = input.chomp
-
-# case-условие:
-case input.to_i
-   when 1
-     first_urls.add
-   when 2
-     first_urls.put
-   when 3
-     puts first_urls.get
-   when 4
-     first_urls.create_next
-   when 5
-     first_urls.check_url
-   else return
-end
-
-
-
