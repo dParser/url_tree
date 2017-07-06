@@ -84,22 +84,16 @@ class FirstLevelUrls
 #  end
 
   def add  # Добавить элемент в массив URL 1-ого уровня
-    puts "\nмассив URL 1-ого уровня:"
-    puts @first_url_hashs
-    puts "\nВведите доменное имя сайта нового оператора:"
-    input = gets
-    @first_url_hashs.push(input.chomp)
-    puts "\nОбновленный массив URL 1-ого уровня:"
-    puts @first_url_hashs
+    puts "\nПока не реализовано..."
   end
- 
+
   def get # Возвратить массив (хэшей?) URL 1-ого уровня
     @first_url_hashs
   end
- 
+
   def put  # Вывести на экран список URL 1-ого уровня
     puts "\nмассив URL 1-ого уровня:"
-    @first_url_hashs.each{|hh| 
+    @first_url_hashs.each{|hh|
       puts "\n"
       puts hh[:oss]
       puts "\tТип клиена: #{hh[:b2_x]}"
@@ -130,7 +124,7 @@ class FirstLevelUrls
       }
     }
   end #def
-  
+
   def check_url # Проверить URL на предмет "200 OK"
     if File.exists?($url_ok_file)  # Создать backup файла 2_200_HTTP.csv
       puts 'Улучшить операцию сохранения предыдущей версии файла. 2_200_HTTP.csv'
@@ -159,5 +153,5 @@ class FirstLevelUrls
       end
     }
   end
-  
+
 end
