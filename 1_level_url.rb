@@ -11,6 +11,7 @@ require 'net/http'
 #     Тип клиента;
 #     Категория тарифного плана;    (для смартфона, планшета, роутера и т.д.)
 #     Домен сайта;
+#     Web протокол
 #     Cтартовое URL в виде шаблона
 #
 # 3. На основании файлов regions.csv и 1_level.csv строится файл 2_level.csv в виде:
@@ -18,6 +19,7 @@ require 'net/http'
 #     Тип клиента;
 #     Категория тарифного плана;    (для смартфона, планшета, роутера и т.д.)
 #     Домен сайта;
+#     Web протокол
 #     URL региона
 
 $path = File.dirname(__FILE__)
@@ -41,7 +43,8 @@ class FirstLevelUrls
                                :b2_x=>arr[1],  # Тип клиена (корп., физ.)
                                :category=>arr[2],  # Категория т.планов
                                :domen=>arr[3], # Доменное имя сайта ОСС
-                               :starting_url=>arr[4]  # Стартовое URL
+                               :web_protokol=>arr[4], # http:// или https://
+                               :starting_url=>arr[5]  # Стартовое URL
                              })
       }
 #    # Загрузка URL 1-ого уровня из тела программы в массив хэшей:
@@ -102,6 +105,7 @@ class FirstLevelUrls
       puts "\tТип клиена: #{hh[:b2_x]}"
       puts "\tКатегория тарифов: #{hh[:category]}"
       puts "\tДомен: #{hh[:domen]}"
+      puts "\tWeb протокол: #{hh[:web_protokol]}"
       puts "\tСтартовое URL: #{hh[:starting_url]}"
     }
   end
@@ -121,7 +125,7 @@ class FirstLevelUrls
                                    # [1] - Регион (лат.)
         if arr[0] == hh[:oss]
           tmp = hh[:starting_url].gsub("^", arr[1]) # в URL: "^" заменить на назв. региона
-          file_obj_level2.puts("#{hh[:oss]};#{hh[:b2_x]};#{hh[:category]};#{hh[:domen]};#{tmp}")
+          file_obj_level2.puts("#{hh[:oss]};#{hh[:b2_x]};#{hh[:category]};#{hh[:domen]};#{hh[:web_protokol]};#{tmp}")
         end
       }
     }
@@ -144,14 +148,14 @@ class FirstLevelUrls
     file_obj_level2 = File.open($level2_file)
     file_obj_level2.each{|line|
       arr = line.chomp.split(";")  # строку файла преобраз. в массив:
-      uri = URI(arr[4])            # последний элем. массива содержит URL
+      uri = URI(arr[5])            # последний элем. массива содержит URL
       res = Net::HTTP.get_response(uri) # проверить код загрузки
       if res.code == "200"
-        file_obj_url_ok.puts("#{arr[0]};#{arr[1]};#{arr[2]};#{arr[3]};#{arr[4]};#{res.code}")
+        file_obj_url_ok.puts("#{arr[0]};#{arr[1]};#{arr[2]};#{arr[3]};#{arr[4]};#{arr[5]};#{res.code}")
         puts res.code
       else
-        file_obj_url_404.puts("#{arr[0]};#{arr[1]};#{arr[2]};#{arr[3]};#{arr[4]};#{res.code}")
-        puts("#{arr[4]};#{res.code}")
+        file_obj_url_404.puts("#{arr[0]};#{arr[1]};#{arr[2]};#{arr[3]};#{arr[4]};#{arr[5]};#{res.code}")
+        puts("#{arr[5]};#{res.code}")
       end
     }
   end
